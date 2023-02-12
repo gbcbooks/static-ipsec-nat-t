@@ -95,16 +95,19 @@ main(){
     echo """
     decapudp.c can be compile with command:
     gcc decapudp.c -o decapudp
-    """
 
-    echo "please make sure the route to <remote private ip> will be route to the internet gateway"
-    echo "or the packet will not be encrypt"
+    please make sure the route to <remote private ip> will be route to the internet gateway
+    or the packet will not be encrypt
 
-    echo "decapudp on remote machine need to be start first before transfer traffic"
+    decapudp on remote machine need to be start first before transfer traffic
 
-    echo "install successfully, please edit conf.d/temp.conf, and you can rename it if you want"
+    run ssh-copy-id <remote_ssh_user>@<remote_public_ip> -p <remote_ssh_port> to authorize this machein
+    to login to remote machine
 
-    echo "supervisorctl start static-ipsec-nat-t to start"
+    install successfully, please edit conf.d/temp.conf, and you can rename it if you want
+
+    supervisorctl start static-ipsec-nat-t to start
+"""
 }
 
 main $*
