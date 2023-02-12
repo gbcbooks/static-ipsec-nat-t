@@ -172,7 +172,7 @@ main(){
                 read_conf ${CONFIG}
                 while ! dpd_keepalive
                 do
-                    echo "clear tunnel session and negotiate"
+                    echo "clear tunnel session and re-negotiate"
                     local_del_tunnel
                     remote_del_tunnel
                     local_add_tunnel
