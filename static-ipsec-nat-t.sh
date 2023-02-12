@@ -134,7 +134,7 @@ EOF
     nat_local_public_ip=$(echo ${conntrack_result} \
     | grep "UNREPLIED" \
     | grep -E "17 [0-9]{1,10} src=([0-9]{1,3}\.){1,3}[0-9]{1,3} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
-    | grep -oE "src=([0-9]{1,3}\.){1,3}[0-9]{1,3}" | grep -v "${remote_public_ip}" | sed "s/src=// | tail -1"
+    | grep -oE "src=([0-9]{1,3}\.){1,3}[0-9]{1,3}" | grep -v "${remote_public_ip}" | sed "s/src=//" | tail -1"
     )
     echo "nat_local_public_ip=${nat_local_public_ip}"
     echo "${nat_local_public_ip}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_public_ip
