@@ -24,7 +24,7 @@ mkdir -p ${STATICIPSECDIR}/conf.d
 
 usage(){
     echo """
-    ./$0 --start
+    ./$0 --start # restart and keepalive
     ./$0 --stop
     ./$0 --restart
     ./$0 --dpd
@@ -132,7 +132,7 @@ probe_session(){
 }
 
 dpd_keepalive(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return 0 || return 1
+    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return_val="true" || return_val="false"
 }
 
 remote_add_tunnel(){
@@ -151,9 +151,11 @@ main(){
                 read_conf ${CONFIG}
                 local_add_tunnel
                 remote_add_tunnel
-                while [ dpd_keepalive -eq 0 ]
+                while [[ $(dpd_keepalive) && ("$return_val"!="true") ]]
                 do
-                    echo "clear tunnel session"
+                    echo "clear tunnel session and negotiate"
+                    local_del_tunnel
+                    remote_del_tunnel
                     local_add_tunnel
                     remote_add_tunnel
                 done
