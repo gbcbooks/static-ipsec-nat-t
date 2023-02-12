@@ -58,6 +58,11 @@ main(){
     set_requirement
     install_supervisor_ini
     install_config_file_temp
+    echo """
+    decapudp.c can be compile with command:
+    gcc decapudp.c -o decapudp
+    """
+
     echo "install successfully, please edit conf.d/temp.conf, and you can rename it if you want"
     echo "supervisorctl start static-ipsec-nat-t to start"
 }
