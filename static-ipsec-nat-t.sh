@@ -154,7 +154,7 @@ probe_session(){
 dpd_keepalive(){
     ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 > /dev/null 2>&1 \
     && (echo "${CONFIG_FILE_NAME} peer alive";return 0) \
-    || (echo "${CONFIG_FILE_NAME} peer alive";return 1)
+    || (echo "${CONFIG_FILE_NAME} peer dead";return 1)
 }
 
 remote_add_tunnel(){
