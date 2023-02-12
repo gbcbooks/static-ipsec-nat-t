@@ -45,9 +45,9 @@ auth_sha256=0x8896ab8654cd9875e214a978bd31209f
 enc_aes=0xea89273861739abc9e0d527ad98462108365289dcb1a6738
 remote_public_ip=
 remote_private_ip=
-ori_local_port= #默认是1100
-nat_local_port= #默认是1100
-remote_port= #默认是1100
+ori_local_port=1100
+nat_local_port=1100
+remote_port=1100
 local_default_if=
 remote_default_if=
 remote_ssh_user=
@@ -58,7 +58,7 @@ echo "install /opt/static-ipsec-nat-t/conf.d/temp.conf"
 
 install_logrotate_conf(){
     mkdir -p /etc/logrotate.d/
-    cat > /etc/logrotate.d/static-ipsec-nat-t << EOF
+    cat > /etc/logrotate.d/static-ipsec-nat-t.conf << EOF
 /var/log/decapudp.log
 { 
     missingok
