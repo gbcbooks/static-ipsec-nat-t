@@ -131,6 +131,10 @@ probe_session(){
     ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5
 }
 
+dpd_keepalive(){
+    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return 0 || return 1
+}
+
 remote_add_tunnel(){
     probe_session
     update_nat_argument
@@ -140,11 +144,20 @@ remote_add_tunnel(){
 main(){
     case $1 in
         --start)
-        for CONFIG in $(ls ${STATICIPSECDIR}/conf.d/*.conf)
+        while true
         do
-            read_conf ${CONFIG}
-            local_add_tunnel
-            remote_add_tunnel
+            for CONFIG in $(ls ${STATICIPSECDIR}/conf.d/*.conf)
+            do
+                read_conf ${CONFIG}
+                local_add_tunnel
+                remote_add_tunnel
+                while [ dpd_keepalive -eq 0 ]
+                do
+                    echo "clear tunnel session"
+                    local_add_tunnel
+                    remote_add_tunnel
+                done
+            done
         done
         ;;
         --stop)

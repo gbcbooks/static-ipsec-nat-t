@@ -36,8 +36,6 @@
     stdout_logfile_backups = 10
     stdout_logfile = /var/log/decapudp.log
 
-# systemctl管理
-
 # 用法
 ## static-ipsec-nat-t.sh
     usage(){
