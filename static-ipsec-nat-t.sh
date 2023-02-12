@@ -178,6 +178,7 @@ main(){
                     remote_del_tunnel
                     local_add_tunnel
                     remote_add_tunnel
+                    break
                 done
                 sleep 5s
             done
