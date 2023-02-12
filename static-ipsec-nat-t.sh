@@ -53,27 +53,46 @@ read_conf(){
 }
 
 local_del_tunnel(){
-    sudo /sbin/ip xfrm state del src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id}
-    sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id}
-    sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir in ptype main
-    sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir out ptype main
+    sudo /sbin/ip xfrm state del src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} \
+    > /dev/null 2>&1 || echo "delete local state failed !!!"
+    sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} \
+    > /dev/null 2>&1 || echo "delete local state failed !!!"
+    sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir in ptype main \
+    > /dev/null 2>&1 || echo "delete local policy failed !!!"
+    sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir out ptype main \
+    > /dev/null 2>&1 || echo "delete local policy failed !!!"
 }
 
 local_add_tunnel(){
-    sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${ori_local_port} ${remote_port} 0.0.0.0
-    sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${ori_local_port} 0.0.0.0
-    sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir in ptype main tmpl src ${remote_public_ip} dst ${ori_local_public_ip} proto esp reqid ${spi_id} mode tunnel
-    sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir out ptype main tmpl src ${ori_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel
+    sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${ori_local_port} ${remote_port} 0.0.0.0 \
+    > /dev/null 2>&1|| echo "add state failed !!!"
+        
+    sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${ori_local_port} 0.0.0.0 \
+    > /dev/null 2>&1|| echo "add state failed !!!"
+    
+    sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir in ptype main \
+    tmpl src ${remote_public_ip} dst ${ori_local_public_ip} proto esp reqid ${spi_id} mode tunnel \
+    > /dev/null 2>&1|| echo "add policy failed !!!"
+    
+    sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir out ptype main \
+    tmpl src ${ori_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel \
+    > /dev/null 2>&1|| echo "add policy failed !!!"
 }
 
 remote_del_tunnel(){
     nat_local_public_ip=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_public_ip)
     if [ ! -z ${nat_local_public_ip} ];then
         ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
-        sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id}
-        sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id}
-        sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir out ptype main
-        sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir in ptype main
+        sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} \
+        > /dev/null 2>&1 || echo "delete local state failed !!!"
+        sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id} \
+        > /dev/null 2>&1 || echo "delete local state failed !!!"
+        sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir out ptype main \
+        > /dev/null 2>&1 || echo "delete local policy failed !!!"
+        sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir in ptype main \
+        > /dev/null 2>&1 || echo "delete local policy failed !!!"
 EOF
     else
         echo "nat_local_public_ip not FOUND, remote_del_tunnel EXIT"
@@ -82,26 +101,26 @@ EOF
 
 remote_add_tunnel_via_ssh(){
     ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
-    sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id}
-    sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id}
-    sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir in ptype main
-    sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir out ptype main
+    # sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id}
+    # sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id}
+    # sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir in ptype main
+    # sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir out ptype main
 
     sudo /sbin/ip xfrm state add src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${nat_local_port} ${remote_port} 0.0.0.0 \
-    || echo "add state failed !!!"
+    > /dev/null 2>&1|| echo "add state failed !!!"
     
     sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${nat_local_port} 0.0.0.0 \
-    || echo "add state failed !!!"
+    > /dev/null 2>&1|| echo "add state failed !!!"
     
     sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir out ptype main \
     tmpl src ${remote_public_ip} dst ${nat_local_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    || echo "add policy failed !!!"
+    > /dev/null 2>&1|| echo "add policy failed !!!"
 
     sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir in ptype main \
     tmpl src ${nat_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    || echo "add policy failed !!!"
+    > /dev/null 2>&1 || echo "add policy failed !!!"
 EOF
 }
 
