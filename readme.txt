@@ -20,3 +20,14 @@ remote_ssh_port=
 # supervisord管理decapudp
 
 # systemctl管理
+
+# 用法
+usage(){
+    echo """
+    ./$0 --start
+    ./$0 --stop
+    ./$0 --restart
+    ./$0 --dpd
+    """
+    exit 0
+}
