@@ -177,7 +177,7 @@ main(){
             do
                 read_conf ${CONFIG}
                 dpd_keepalive
-                while [ ${last_keepalive} -le 3 ]
+                while [ ${last_keepalive} -ge 3 ]
                 do
                     echo "clear ${CONFIG_FILE_NAME} tunnel session and re-negotiate"
                     local_del_tunnel
