@@ -101,6 +101,8 @@ main(){
     please make sure the route to <remote private ip> will be route to the internet gateway
     or the packet will not be encrypt
 
+    please make sure the remote machine's firewall allow port 1100 (default udp port, you can change if you know what to do)
+
     decapudp on remote machine need to be start first before transfer traffic
 
     run:
