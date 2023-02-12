@@ -19,7 +19,7 @@ stdout_logfile_maxbytes = 50MB
 stdout_logfile_backups = 10
 stdout_logfile = /var/log/decapudp.log
 [program:static-ipsec-nat-t]
-command = sh /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --start
+command = bash /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --start
 stop-command = sh /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --stop
 directory = /opt/static-ipsec-nat-t
 autostart=true

@@ -157,15 +157,10 @@ dpd_keepalive(){
     temp_keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
     
     echo ${temp_keepalive} | grep -E "^[0-9]$" > /dev/null 2>&1
-    if [ $? -ne 0 ];then
-        echo "hello"
-        echo "${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive"
-        echo "0" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive
-        echo "last_rest=$?"
-        cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive
-        echo "--"
-        temp_keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
-    fi
+    [ $? -ne 0 ] \
+    && echo "0" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive
+    
+    temp_keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
 
     ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1 > /dev/null 2>&1 \
     && (echo "${CONFIG_FILE_NAME} peer alive";\
