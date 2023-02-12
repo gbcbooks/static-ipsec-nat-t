@@ -150,10 +150,10 @@ probe_session(){
 }
 
 dpd_keepalive(){
-    keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
-    [ ! -z ${keepalive} ] && temp_keepalive=${keepalive} || temp_keepalive=0
+    # keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
+    # [ ! -z ${keepalive} ] && temp_keepalive=${keepalive} || temp_keepalive=0
     ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1 > /dev/null 2>&1 \
-    && (echo "${CONFIG_FILE_NAME} peer alive"；\
+    && (echo "${CONFIG_FILE_NAME} peer alive";\
     echo "0" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive;\
     return 0) \
     || (echo "${CONFIG_FILE_NAME} peer dead";\
