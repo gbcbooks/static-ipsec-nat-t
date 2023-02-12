@@ -101,7 +101,9 @@ main(){
 
     decapudp on remote machine need to be start first before transfer traffic
 
-    run ssh-copy-id <remote_ssh_user>@<remote_public_ip> -p <remote_ssh_port> to authorize this machein
+    run:
+    ssh-keygen
+    ssh-copy-id <remote_ssh_user>@<remote_public_ip> -p <remote_ssh_port> to authorize this machein
     to login to remote machine
 
     install successfully, please edit conf.d/temp.conf, and you can rename it if you want
