@@ -132,7 +132,7 @@ probe_session(){
 }
 
 dpd_keepalive(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return_val="true" || return_val="false"
+    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return 0 || return 1
 }
 
 remote_add_tunnel(){
@@ -151,7 +151,8 @@ main(){
                 read_conf ${CONFIG}
                 local_add_tunnel
                 remote_add_tunnel
-                while [[ $(dpd_keepalive) && ("$return_val"!="true") ]]
+                sleep 5s
+                while ! dpd_keepalive
                 do
                     echo "clear tunnel session and negotiate"
                     local_del_tunnel

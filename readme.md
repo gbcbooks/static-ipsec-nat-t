@@ -48,6 +48,33 @@
     stdout_logfile_backups = 10
     stdout_logfile = /var/log/static-ipsec-nat-t.log
 
+# logrotate
+## /etc/logrotate.d/static-ipsec-nat-t
+    /var/log/decapudp.log
+    { 
+        missingok
+        notifempty
+        sharedscripts
+        delaycompress
+        create 0644 root root 
+            minsize 5M
+        rotate 5
+        postrotate
+        endscript
+    }
+    /var/log/static-ipsec-nat-t.log
+    { 
+        missingok
+        notifempty
+        sharedscripts
+        delaycompress
+        create 0644 root root 
+            minsize 5M
+        rotate 5
+        postrotate
+        endscript
+    }
+
 # 用法
 ## static-ipsec-nat-t.sh
     usage(){
