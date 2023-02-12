@@ -38,6 +38,7 @@
 
     [program:static-ipsec-nat-t]
     command = sh /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --start
+    stop-command = sh /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --stop
     directory = /opt/static-ipsec-nat-t
     autostart=true
     autorestart=true

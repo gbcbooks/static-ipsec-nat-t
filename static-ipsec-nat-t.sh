@@ -151,7 +151,9 @@ probe_session(){
 }
 
 dpd_keepalive(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 && return 0 || return 1
+    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 > /dev/null 2>&1 \
+    && (echo "${CONFIG_FILE_NAME} peer alive";return 0) \
+    || (echo "${CONFIG_FILE_NAME} peer alive";return 1)
 }
 
 remote_add_tunnel(){
@@ -175,8 +177,8 @@ main(){
                     remote_del_tunnel
                     local_add_tunnel
                     remote_add_tunnel
-                    sleep 5s
                 done
+                sleep 5s
             done
         done
         ;;
