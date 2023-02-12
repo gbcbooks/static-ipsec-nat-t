@@ -36,7 +36,7 @@ echo "install /etc/supervisor/conf.d/static-ipsec-nat-t.conf"
 
 install_config_file_temp(){
     mkdir -p /opt/static-ipsec-nat-t/conf.d/
-    cat > /opt/static-ipsec-nat-t/conf.d/temp.conf << EOF
+    cat > /opt/static-ipsec-nat-t/temp.conf << EOF
 ori_local_public_ip=
 nat_local_public_ip=
 local_private_ip=
@@ -53,7 +53,7 @@ remote_default_if=
 remote_ssh_user=
 remote_ssh_port=
 EOF
-echo "install /opt/static-ipsec-nat-t/conf.d/temp.conf"
+echo "install /opt/static-ipsec-nat-t/temp.conf"
 }
 
 install_logrotate_conf(){
@@ -106,7 +106,8 @@ main(){
     ssh-copy-id <remote_ssh_user>@<remote_public_ip> -p <remote_ssh_port> to authorize this machein
     to login to remote machine
 
-    install successfully, please edit conf.d/temp.conf, and you can rename it if you want
+    install successfully, please edit ./temp.conf, and copyt it to conf.d/filename.conf
+    and you can rename it if you want
 
     supervisorctl start static-ipsec-nat-t to start
 """
