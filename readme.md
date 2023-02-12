@@ -22,6 +22,8 @@
     remote_ssh_port=
 
 # supervisord管理decapudp
+    可以添加到supervisord.conf或独立的*.ini中
+    
     [program:decapudp]
     command = /opt/decapudp/decapudp 1100
     directory = /opt/decapudp
@@ -52,6 +54,6 @@
 ### 启动
     /opt/decapudp/decapudp 1100
 
-## 感谢
+# 感谢
     https://zhuanlan.zhihu.com/p/21884303
     http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
