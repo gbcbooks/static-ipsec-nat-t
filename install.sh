@@ -40,9 +40,9 @@ install_config_file_temp(){
 ori_local_public_ip=
 nat_local_public_ip=
 local_private_ip=
-spi_id=
-auth_sha256=
-enc_aes=
+spi_id=0xc0666a70
+auth_sha256=0x8896ab8654cd9875e214a978bd31209f
+enc_aes=0xea89273861739abc9e0d527ad98462108365289dcb1a6738
 remote_public_ip=
 remote_private_ip=
 ori_local_port= #默认是1100
