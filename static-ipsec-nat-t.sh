@@ -95,7 +95,7 @@ remote_del_tunnel(){
         > /dev/null 2>&1 || echo "delete remote policy failed !!!"
 EOF
     else
-        echo "nat_local_public_ip not FOUND, remote_del_tunnel EXIT"
+        echo "<nat_local_public_ip> not FOUND, remote_del_tunnel EXIT"
     fi
 }
 
