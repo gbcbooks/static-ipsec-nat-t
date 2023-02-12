@@ -150,9 +150,16 @@ probe_session(){
 }
 
 dpd_keepalive(){
+    keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
+    [ ! -z ${keepalive} ] && temp_keepalive=${keepalive} || temp_keepalive=0
     ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1 > /dev/null 2>&1 \
-    && (echo "${CONFIG_FILE_NAME} peer alive";return 0) \
-    || (echo "${CONFIG_FILE_NAME} peer dead";return 1)
+    && (echo "${CONFIG_FILE_NAME} peer alive"；\
+    echo "0" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive;\
+    return 0) \
+    || (echo "${CONFIG_FILE_NAME} peer dead";\
+    echo "$[${temp_keepalive}+1]" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive;\
+    return 1)
+    last_keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
 }
 
 remote_add_tunnel(){
@@ -169,7 +176,8 @@ main(){
             for CONFIG in $(ls ${STATICIPSECDIR}/conf.d/*.conf)
             do
                 read_conf ${CONFIG}
-                while ! dpd_keepalive
+                dpd_keepalive
+                while [ ${last_keepalive} -le 3 ]
                 do
                     echo "clear ${CONFIG_FILE_NAME} tunnel session and re-negotiate"
                     local_del_tunnel
