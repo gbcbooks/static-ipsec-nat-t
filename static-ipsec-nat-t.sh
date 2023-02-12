@@ -86,13 +86,13 @@ remote_del_tunnel(){
     if [ ! -z ${nat_local_public_ip} ];then
         ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
         sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} \
-        > /dev/null 2>&1 || echo "delete local state failed !!!"
+        > /dev/null 2>&1 || echo "delete remote state failed !!!"
         sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id} \
-        > /dev/null 2>&1 || echo "delete local state failed !!!"
+        > /dev/null 2>&1 || echo "delete remote state failed !!!"
         sudo /sbin/ip xfrm policy del src ${remote_private_ip} dst ${local_private_ip} dir out ptype main \
-        > /dev/null 2>&1 || echo "delete local policy failed !!!"
+        > /dev/null 2>&1 || echo "delete remote policy failed !!!"
         sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir in ptype main \
-        > /dev/null 2>&1 || echo "delete local policy failed !!!"
+        > /dev/null 2>&1 || echo "delete remote policy failed !!!"
 EOF
     else
         echo "nat_local_public_ip not FOUND, remote_del_tunnel EXIT"
@@ -108,19 +108,19 @@ remote_add_tunnel_via_ssh(){
 
     sudo /sbin/ip xfrm state add src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${nat_local_port} ${remote_port} 0.0.0.0 \
-    > /dev/null 2>&1|| echo "add state failed !!!"
+    > /dev/null 2>&1|| echo "add remote state failed !!!"
     
     sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${nat_local_port} 0.0.0.0 \
-    > /dev/null 2>&1|| echo "add state failed !!!"
+    > /dev/null 2>&1|| echo "add remote state failed !!!"
     
     sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir out ptype main \
     tmpl src ${remote_public_ip} dst ${nat_local_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    > /dev/null 2>&1|| echo "add policy failed !!!"
+    > /dev/null 2>&1|| echo "add remote policy failed !!!"
 
     sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir in ptype main \
     tmpl src ${nat_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    > /dev/null 2>&1 || echo "add policy failed !!!"
+    > /dev/null 2>&1 || echo "add remote policy failed !!!"
 EOF
 }
 
