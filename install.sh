@@ -63,6 +63,9 @@ main(){
     gcc decapudp.c -o decapudp
     """
 
+    echo "please make sure the route to <remote private ip> will be route to the internet gateway"
+    echo "or the packet will not be encrypt"
+
     echo "install successfully, please edit conf.d/temp.conf, and you can rename it if you want"
     echo "supervisorctl start static-ipsec-nat-t to start"
 }
