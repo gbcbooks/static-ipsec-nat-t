@@ -54,10 +54,41 @@ EOF
 echo "install /opt/static-ipsec-nat-t/conf.d/temp.conf"
 }
 
+install_logrotate_conf(){
+    cat > /etc/logrotate.d/static-ipsec-nat-t << EOF
+/var/log/decapudp.log
+{ 
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    create 0644 root root 
+        minsize 5M
+    rotate 5
+    postrotate
+    endscript
+}
+/var/log/static-ipsec-nat-t.log
+{ 
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    create 0644 root root 
+        minsize 5M
+    rotate 5
+    postrotate
+    endscript
+}
+EOF
+echo "install /etc/logrotate.d/static-ipsec-nat-t.conf"
+}
+
 main(){
     set_requirement
     install_supervisor_ini
     install_config_file_temp
+    install_logrotate_conf
     echo """
     decapudp.c can be compile with command:
     gcc decapudp.c -o decapudp

@@ -50,7 +50,7 @@
     stdout_logfile = /var/log/static-ipsec-nat-t.log
 
 # logrotate
-## /etc/logrotate.d/static-ipsec-nat-t
+## /etc/logrotate.d/static-ipsec-nat-t.conf
     /var/log/decapudp.log
     { 
         missingok
