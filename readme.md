@@ -46,13 +46,12 @@
         ./$0 --dpd
         """
         exit 0
-    test
-## decapudp.c
-    编译
+## decapudp
+### 编译
     gcc decapudp.c -o decapudp
-
+### 启动
+    /opt/decapudp/decapudp 1100
 
 ## 感谢
-
     https://zhuanlan.zhihu.com/p/21884303
     http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
