@@ -146,11 +146,11 @@ EOF
 }
 
 probe_session(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5
+    ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1
 }
 
 dpd_keepalive(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 2 -i 0.2 -W 5 > /dev/null 2>&1 \
+    ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1 > /dev/null 2>&1 \
     && (echo "${CONFIG_FILE_NAME} peer alive";return 0) \
     || (echo "${CONFIG_FILE_NAME} peer dead";return 1)
 }
