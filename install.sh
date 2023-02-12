@@ -5,6 +5,7 @@ set_requirement(){
 }
 
 install_supervisor_ini(){
+    mkdir -p /etc/supervisor/conf.d
     cat > /etc/supervisor/conf.d/static-ipsec-nat-t.conf << EOF
 [program:decapudp]
 command = /opt/static-ipsec-nat-t/decapudp 1100
@@ -34,6 +35,7 @@ echo "install /etc/supervisor/conf.d/static-ipsec-nat-t.conf"
 }
 
 install_config_file_temp(){
+    mkdir -p /opt/static-ipsec-nat-t/conf.d/
     cat > /opt/static-ipsec-nat-t/conf.d/temp.conf << EOF
 ori_local_public_ip=
 nat_local_public_ip=
@@ -55,6 +57,7 @@ echo "install /opt/static-ipsec-nat-t/conf.d/temp.conf"
 }
 
 install_logrotate_conf(){
+    mkdir -p /etc/logrotate.d/
     cat > /etc/logrotate.d/static-ipsec-nat-t << EOF
 /var/log/decapudp.log
 { 
