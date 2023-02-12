@@ -3,7 +3,8 @@
     decapudp.c 负责解包/封装esp over udp
 
 
-# 在<path/conf.d/local-to-peer.conf>中对以下变量进行定义
+# 配置文件
+    在<path/conf.d/local-to-peer.conf>中对以下变量进行定义
 
     在conf.d中的*.conf定义
     ori_local_public_ip=
