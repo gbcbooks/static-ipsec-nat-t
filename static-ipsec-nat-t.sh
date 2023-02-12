@@ -149,9 +149,6 @@ main(){
             for CONFIG in $(ls ${STATICIPSECDIR}/conf.d/*.conf)
             do
                 read_conf ${CONFIG}
-                local_add_tunnel
-                remote_add_tunnel
-                sleep 5s
                 while ! dpd_keepalive
                 do
                     echo "clear tunnel session and negotiate"
@@ -159,6 +156,7 @@ main(){
                     remote_del_tunnel
                     local_add_tunnel
                     remote_add_tunnel
+                    sleep 5s
                 done
             done
         done
