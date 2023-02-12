@@ -95,6 +95,8 @@ main(){
     echo """
     decapudp.c can be compile with command:
     gcc decapudp.c -o decapudp
+    
+    this is very usefull when the pre-compile decapudp can be use !!!
 
     please make sure the route to <remote private ip> will be route to the internet gateway
     or the packet will not be encrypt
