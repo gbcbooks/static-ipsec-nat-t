@@ -25,8 +25,8 @@
     可以添加到supervisord.conf或独立的*.ini中
     
     [program:decapudp]
-    command = /opt/decapudp/decapudp 1100
-    directory = /opt/decapudp
+    command = /opt/static-ipsec-nat-t/decapudp 1100
+    directory = /opt/static-ipsec-nat-t
     autostart=true
     autorestart=true
     user = root
@@ -35,6 +35,18 @@
     stdout_logfile_maxbytes = 50MB
     stdout_logfile_backups = 10
     stdout_logfile = /var/log/decapudp.log
+
+    [program:static-ipsec-nat-t]
+    command = sh /opt/static-ipsec-nat-t/static-ipsec-nat-t.sh --start
+    directory = /opt/static-ipsec-nat-t
+    autostart=true
+    autorestart=true
+    user = root
+    startsecs = 3
+    redirect_stderr = true
+    stdout_logfile_maxbytes = 50MB
+    stdout_logfile_backups = 10
+    stdout_logfile = /var/log/static-ipsec-nat-t.log
 
 # 用法
 ## static-ipsec-nat-t.sh
