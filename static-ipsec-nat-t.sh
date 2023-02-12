@@ -126,7 +126,7 @@ EOF
 
 update_nat_argument(){
     conntrack_result=$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
-    sudo /usr/sbin/conntrack -L -p udp | grep dport=${remote_port}
+    sudo /usr/sbin/conntrack -L -p udp | grep dport=${remote_port} | grep "UNREPLIED"
 EOF
     )
     echo ${conntrack_result}
