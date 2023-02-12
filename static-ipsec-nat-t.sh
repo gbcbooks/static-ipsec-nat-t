@@ -129,7 +129,7 @@ update_nat_argument(){
     sudo /usr/sbin/conntrack -L -p udp | grep dport=${remote_port}
 EOF
     )
-    echo ${conntrack_result}
+    echo "${conntrack_result}"
 
     nat_local_public_ip=$(echo ${conntrack_result} \
     | grep -E "17 [0-9]{1,10} src=([0-9]{1,3}\.){1,3}[0-9]{1,3} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
