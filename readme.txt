@@ -30,4 +30,4 @@ usage(){
     ./$0 --dpd
     """
     exit 0
-}
+test
