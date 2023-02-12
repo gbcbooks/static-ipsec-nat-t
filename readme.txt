@@ -16,3 +16,7 @@ local_default_if=
 remote_default_if=
 remote_ssh_user=
 remote_ssh_port=
+
+# supervisord管理decapudp
+
+# systemctl管理
