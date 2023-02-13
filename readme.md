@@ -105,5 +105,6 @@
     /opt/decapudp/decapudp 1100
 
 # 感谢
+    https://www.sobyte.net/post/2022-10/ipsec-ip-xfrm/
     https://zhuanlan.zhihu.com/p/21884303
     http://techblog.newsnow.co.uk/2011/11/simple-udp-esp-encapsulation-nat-t-for.html
