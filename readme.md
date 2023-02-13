@@ -93,6 +93,8 @@
         ./$0 --dpd
         """
         exit 0
+## supervisorctl 
+    supervisorctl start static-ipsec-nat-t
 ## decapudp
 ### 编译
     gcc decapudp.c -o decapudp
