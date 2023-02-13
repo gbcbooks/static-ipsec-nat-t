@@ -56,7 +56,7 @@
     stdout_logfile_backups = 10
     stdout_logfile = /var/log/static-ipsec-nat-t.log
 
-# logrotate
+# 关于logrotate
 ## /etc/logrotate.d/static-ipsec-nat-t
     /var/log/decapudp.log
     { 
