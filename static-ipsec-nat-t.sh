@@ -153,7 +153,7 @@ EOF
 }
 
 probe_session(){
-    ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1
+    save_log "INFO" "$(ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1)"
 }
 
 dpd_keepalive(){
