@@ -142,14 +142,14 @@ EOF
     | grep -E "17 [0-9]{1,10} src=([0-9]{1,3}\.){1,3}[0-9]{1,3} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
     | grep -oE "src=([0-9]{1,3}\.){1,3}[0-9]{1,3}" | grep -v "${remote_public_ip}" | sed "s/src=//" | tail -1)
     save_log "INFO" "nat_local_public_ip=${nat_local_public_ip}"
-    save_log "INFO" "${nat_local_public_ip}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_public_ip
+    echo "${nat_local_public_ip}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_public_ip
 
     nat_local_port=$(echo ${conntrack_result} \
     | grep -E "src=${nat_local_public_ip} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
     | grep -oE "sport=[0-9]{1,5}" | grep -v "sport=${remote_port}" | sed "s/sport=//" | tail -1)
 
     save_log "INFO" "nat_local_port=${nat_local_port}"
-    save_log "INFO" "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
+    echo "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
 }
 
 probe_session(){
