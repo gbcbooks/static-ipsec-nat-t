@@ -58,7 +58,7 @@ echo "install /opt/static-ipsec-nat-t/temp.conf"
 
 install_logrotate_conf(){
     mkdir -p /etc/logrotate.d/
-    cat > /etc/logrotate.d/static-ipsec-nat-t.conf << EOF
+    cat > /etc/logrotate.d/static-ipsec-nat-t << EOF
 /var/log/decapudp.log
 { 
     missingok
@@ -84,7 +84,7 @@ install_logrotate_conf(){
     endscript
 }
 EOF
-echo "install /etc/logrotate.d/static-ipsec-nat-t.conf"
+echo "install /etc/logrotate.d/static-ipsec-nat-t"
 }
 
 main(){
