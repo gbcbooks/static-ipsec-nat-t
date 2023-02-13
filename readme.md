@@ -104,6 +104,9 @@
 ### 启动
     /opt/decapudp/decapudp 1100
 
+# 缺点
+    如果NAT后端有多个节点同时发起建隧道请求，则服务端会有多个NAT后的UDP端口，此时会有一定的概率无法把每个UDP端口对应一一对应上会话，在ip x s和ip x p时，就会有混乱的情况出现
+
 # 感谢
     https://www.sobyte.net/post/2022-10/ipsec-ip-xfrm/
     https://zhuanlan.zhihu.com/p/21884303
