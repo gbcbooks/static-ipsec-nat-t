@@ -2,6 +2,13 @@
     conntrack-tools
     decapudp.c 负责解包/封装esp over udp
 
+# 获取
+## 获取
+    mkdir /opt/static-ipsec-nat-t
+    git clone https://github.com/gbcbooks/static-ipsec-nat-t.git "/opt/static-ipsec-nat-t"
+## 更新
+    cd /opt/static-ipsec-nat-t
+    git pull
 
 # 配置文件
     在conf.d中的*.conf定义
