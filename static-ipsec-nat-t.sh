@@ -170,10 +170,10 @@ dpd_keepalive(){
     temp_keepalive=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive)
 
     ping -I ${local_private_ip} ${remote_private_ip} -c 1 -i 0.2 -W 1 > /dev/null 2>&1 \
-    && (echo "${CONFIG_FILE_NAME} peer alive";\
+    && (save_log "INFO" "${CONFIG_FILE_NAME} peer alive";\
     echo "0" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive;\
     return 0) \
-    || (echo "${CONFIG_FILE_NAME} peer dead,time ${temp_keepalive}";\
+    || (save_log "INFO" "${CONFIG_FILE_NAME} peer dead,time ${temp_keepalive}";\
     echo "${temp_keepalive}+1" | bc > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_keepalive;\
     return 1)
 
