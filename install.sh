@@ -32,6 +32,7 @@ stdout_logfile_backups = 10
 stdout_logfile = /var/log/static-ipsec-nat-t.log
 EOF
 echo "install /etc/supervisor/conf.d/static-ipsec-nat-t.conf"
+echo "if you are using a low version, you maybe need to copy the configuration to supervisord.conf"
 }
 
 install_config_file_temp(){
