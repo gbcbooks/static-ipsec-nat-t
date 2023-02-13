@@ -10,6 +10,9 @@
     cd /opt/static-ipsec-nat-t
     git pull
 
+# 关于安装
+    sh install
+
 # 配置文件
     在conf.d中的*.conf定义
     ori_local_public_ip=
