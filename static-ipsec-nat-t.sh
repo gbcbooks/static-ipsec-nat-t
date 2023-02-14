@@ -144,9 +144,17 @@ EOF
     save_log "INFO" "nat_local_public_ip=${nat_local_public_ip}"
     echo "${nat_local_public_ip}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_public_ip
 
+    # nat_local_port=$(echo ${conntrack_result} \
+    # | awk '{print $4,$6}' \
+    # | grep -E "src=${nat_local_public_ip} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
+    # | grep -oE "sport=[0-9]{1,5}" | grep -v "sport=${remote_port}" | sed "s/sport=//" | tail -1)
+
     nat_local_port=$(echo ${conntrack_result} \
-    | grep -E "src=${nat_local_public_ip} dst=${remote_public_ip} sport=[0-9]{1,5} dport=${remote_port}" \
-    | grep -oE "sport=[0-9]{1,5}" | grep -v "sport=${remote_port}" | sed "s/sport=//" | tail -1)
+    | awk '{print $4,$6}' \
+    | grep -v "sport=${remote_port}" \
+    | grep -oE "sport=[0-9]{1,5}" \
+    | sed "s/sport=//"
+
 
     save_log "INFO" "nat_local_port=${nat_local_port}"
     echo "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
