@@ -153,7 +153,7 @@ EOF
     | awk '{print $4,$6}' \
     | grep -v "sport=${remote_port}" \
     | grep -oE "sport=[0-9]{1,5}" \
-    | sed "s/sport=//"
+    | sed "s/sport=//")
 
 
     save_log "INFO" "nat_local_port=${nat_local_port}"
