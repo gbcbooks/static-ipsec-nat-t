@@ -37,6 +37,7 @@ read_conf(){
     CONFIG_FILE_NAME=${CONFIG##*/}
     ori_local_public_ip=$(awk -F ' *= *' '$1=="ori_local_public_ip"{print $2}' "${CONFIG}")
     nat_local_public_ip=$(awk -F ' *= *' '$1=="nat_local_public_ip"{print $2}' "${CONFIG}")
+    nat_local_public_ip_online_get=$(awk -F ' *= *' '$1=="nat_local_public_ip_online_get"{print $2}' "${CONFIG}")
     local_private_ip=$(awk -F ' *= *' '$1=="local_private_ip"{print $2}' "${CONFIG}")
     spi_id=$(awk -F ' *= *' '$1=="spi_id"{print $2}' "${CONFIG}")
     auth_sha256=$(awk -F ' *= *' '$1=="auth_sha256"{print $2}' "${CONFIG}")
