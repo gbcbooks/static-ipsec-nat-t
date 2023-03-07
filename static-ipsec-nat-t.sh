@@ -132,7 +132,8 @@ EOF
 }
 
 update_nat_argument(){
-    nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}")
+    [ -z ${nat_local_public_ip} ]\
+    && nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}")
     
     conntrack_result=$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
     sudo /usr/sbin/conntrack -L -p udp | grep "src=${nat_local_public_ip}" | grep "dport=${remote_port}"
