@@ -197,9 +197,16 @@ remote_add_tunnel(){
     remote_add_tunnel_via_ssh
 }
 
+clear_cache(){
+    rm -rf ${STATICIPSECDIR}/cache/*
+    save_log "INFO" "cache has been clear"
+}
+
+
 main(){
     case $1 in
         --start)
+        clear_cache
         while true
         do
             for CONFIG in $(ls ${STATICIPSECDIR}/conf.d/*.conf)
