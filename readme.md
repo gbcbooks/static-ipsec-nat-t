@@ -11,7 +11,14 @@
     git pull
 
 # 关于安装
+## 在NAT后端执行
     sh install
+    正常配置static-ipsec-nat-t和decapudp即可
+
+## 在服务端
+    sh install
+    一般只配置decapudp即可
+    
 
 # 配置文件
     在conf.d中的*.conf定义
