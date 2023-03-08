@@ -51,6 +51,7 @@ read_conf(){
     remote_default_if=$(awk -F ' *= *' '$1=="remote_default_if"{print $2}' "${CONFIG}")
     remote_ssh_user=$(awk -F ' *= *' '$1=="remote_ssh_user"{print $2}' "${CONFIG}")
     remote_ssh_port=$(awk -F ' *= *' '$1=="remote_ssh_port"{print $2}' "${CONFIG}")
+    espmode=$(awk -F ' *= *' '$1=="espmode"{print $2}' "${CONFIG}")
 }
 
 #仅终端打印日志
@@ -72,11 +73,11 @@ local_del_tunnel(){
 
 local_add_tunnel(){
     sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${ori_local_port} ${remote_port} 0.0.0.0 \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${ori_local_port} ${remote_port} 0.0.0.0 \
     > /dev/null 2>&1|| save_log "INFO"  "add state failed !!!"
         
     sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${ori_local_port} 0.0.0.0 \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${remote_port} ${ori_local_port} 0.0.0.0 \
     > /dev/null 2>&1|| save_log "INFO"  "add state failed !!!"
     
     sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir in ptype main \
@@ -116,11 +117,11 @@ remote_add_tunnel_via_ssh(){
     # sudo /sbin/ip xfrm policy del src ${local_private_ip} dst ${remote_private_ip} dir out ptype main
 
     sudo /sbin/ip xfrm state add src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${nat_local_port} ${remote_port} 0.0.0.0 \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${nat_local_port} ${remote_port} 0.0.0.0 \
     > /dev/null 2>&1|| echo "add remote state failed !!!"
     
     sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap espinudp-nonike ${remote_port} ${nat_local_port} 0.0.0.0 \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${remote_port} ${nat_local_port} 0.0.0.0 \
     > /dev/null 2>&1|| echo "add remote state failed !!!"
     
     sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir out ptype main \
@@ -160,7 +161,10 @@ EOF
     | grep -oE "sport=[0-9]{1,5}" \
     | sed "s/sport=//")
 
+    [ -z ${espmode} ] \
+    && espmode="espinudp-nonike"
 
+    save_log "INFO" "espmode=${espmode}"
     save_log "INFO" "nat_local_port=${nat_local_port}"
     echo "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
 }
