@@ -72,21 +72,21 @@ local_del_tunnel(){
 }
 
 local_add_tunnel(){
-    sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${ori_local_port} ${remote_port} 0.0.0.0 \
-    > /dev/null 2>&1|| save_log "INFO"  "add state failed !!!"
+    save_log "INFO" "$(sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${ori_local_port} ${remote_port} 0.0.0.0)" \
+    || save_log "INFO"  "add state failed !!!"
         
-    sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
-    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${remote_port} ${ori_local_port} 0.0.0.0 \
-    > /dev/null 2>&1|| save_log "INFO"  "add state failed !!!"
+    save_log "INFO" "$(sudo /sbin/ip xfrm state add src ${remote_public_ip} dst ${ori_local_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
+    mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${remote_port} ${ori_local_port} 0.0.0.0)" \
+    || save_log "INFO"  "add state failed !!!"
     
-    sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir in ptype main \
-    tmpl src ${remote_public_ip} dst ${ori_local_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    > /dev/null 2>&1|| save_log "INFO"  "add policy failed !!!"
+    save_log "INFO" "$(sudo /sbin/ip xfrm policy add src ${remote_private_ip} dst ${local_private_ip} dir in ptype main \
+    tmpl src ${remote_public_ip} dst ${ori_local_public_ip} proto esp reqid ${spi_id} mode tunnel)" \
+    || save_log "INFO"  "add policy failed !!!"
     
-    sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir out ptype main \
-    tmpl src ${ori_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel \
-    > /dev/null 2>&1|| save_log "INFO"  "add policy failed !!!"
+    save_log "INFO" "$(sudo /sbin/ip xfrm policy add src ${local_private_ip} dst ${remote_private_ip} dir out ptype main \
+    tmpl src ${ori_local_public_ip} dst ${remote_public_ip} proto esp reqid ${spi_id} mode tunnel)" \
+    || save_log "INFO"  "add policy failed !!!"
 }
 
 remote_del_tunnel(){
