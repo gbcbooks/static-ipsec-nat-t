@@ -164,11 +164,13 @@ EOF
     | grep -oE "sport=[0-9]{1,5}" \
     | sed "s/sport=//")
 
+    # 保存espmode的值到cache
     [ -z ${espmode} ] \
     && espmode="espinudp-nonike"
-
     save_log "INFO" "espmode=${espmode}"
     echo "${espmode}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_espmode
+
+    # 保存nat_local_port的值到cache
     save_log "INFO" "nat_local_port=${nat_local_port}"
     echo "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
 }
