@@ -72,6 +72,7 @@ local_del_tunnel(){
 }
 
 local_add_tunnel(){
+    espmode=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_espmode)
     save_log "DEBUG" "encap ${espmode}"
     save_log "INFO" "$(sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${ori_local_port} ${remote_port} 0.0.0.0)" \
@@ -111,6 +112,7 @@ EOF
 }
 
 remote_add_tunnel_via_ssh(){
+    espmode=$(cat ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_espmode)
     save_log "INFO" "$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
     # sudo /sbin/ip xfrm state del src ${nat_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id}
     # sudo /sbin/ip xfrm state del src ${remote_public_ip} dst ${nat_local_public_ip} proto esp spi ${spi_id}
@@ -166,6 +168,7 @@ EOF
     && espmode="espinudp-nonike"
 
     save_log "INFO" "espmode=${espmode}"
+    echo "${espmode}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_espmode
     save_log "INFO" "nat_local_port=${nat_local_port}"
     echo "${nat_local_port}" > ${STATICIPSECDIR}/cache/${CONFIG_FILE_NAME}_nat_local_port
 }
