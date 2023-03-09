@@ -72,6 +72,7 @@ local_del_tunnel(){
 }
 
 local_add_tunnel(){
+    save_log "DEBUG" "encap ${espmode}"
     save_log "INFO" "$(sudo /sbin/ip xfrm state add src ${ori_local_public_ip} dst ${remote_public_ip} proto esp spi ${spi_id} reqid ${spi_id} \
     mode tunnel auth sha256 ${auth_sha256} enc aes ${enc_aes} encap ${espmode} ${ori_local_port} ${remote_port} 0.0.0.0)" \
     || save_log "INFO"  "add state failed !!!"
