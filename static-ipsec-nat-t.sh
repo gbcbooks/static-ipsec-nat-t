@@ -164,10 +164,10 @@ EOF
     # | grep -oE "sport=[0-9]{1,5}" | grep -v "sport=${remote_port}" | sed "s/sport=//" | tail -1)
 
     nat_local_port=$(echo ${conntrack_result} \
-    | awk '{print $4,$6}' \
-    | grep -v "sport=${remote_port}" \
-    | grep -oE "sport=[0-9]{1,5}" \
-    | sed "s/sport=//")
+    | grep -oE "(sport=[0-9]{1,5})" \
+    | grep -v "${remote_port}" \
+    | grep -oE "[0-9]{1,6}" \
+    | xargs )
 
     # 保存espmode的值到cache
     [ -z ${espmode} ] \
