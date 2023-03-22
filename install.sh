@@ -82,6 +82,7 @@ install_logrotate_conf(){
         minsize 5M
     rotate 5
     postrotate
+        supervisorctl restart static-ipsec-nat-t
     endscript
 }
 EOF
