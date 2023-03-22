@@ -57,7 +57,7 @@ read_conf(){
 #仅终端打印日志
 save_log(){
     ctime=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "${ctime} [$1]:$2"
+    echo "${ctime} [$1][${CONFIG_FILE_NAME}]:$2"
 }
 
 local_del_tunnel(){
@@ -143,8 +143,13 @@ update_nat_argument(){
     [ -z ${nat_local_public_ip_online_get} ] \
     && nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}") \
     
+#     conntrack_result=$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
+#     sudo /usr/sbin/conntrack -L -p udp | grep "src=${nat_local_public_ip}" | grep "dport=${remote_port}"
+# EOF
+#     )
+
     conntrack_result=$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
-    sudo /usr/sbin/conntrack -L -p udp | grep "src=${nat_local_public_ip}" | grep "dport=${remote_port}"
+    sudo /usr/sbin/conntrack -E --proto udp --orig-port-dst 1100 | grep "src=${nat_local_public_ip}" | grep "dport=${remote_port}"
 EOF
     )
 
