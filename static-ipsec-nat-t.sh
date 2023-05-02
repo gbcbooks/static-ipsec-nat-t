@@ -143,7 +143,7 @@ update_nat_argument(){
     save_log "INFO" "updating nat_local_public_ip"
     [ ! -z ${nat_local_public_ip_online_get} ] \
     && (save_log "INFO" "nat_local_public_ip_online_get FOUND !!";\
-    nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}");\
+    declare -g nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}");\
     save_log "INFO" "get online nat_local_public_ip=${nat_local_public_ip}"\
     )
     save_log "INFO" "nat_local_public_ip=${nat_local_public_ip} debug"
