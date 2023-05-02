@@ -24,6 +24,7 @@
     在conf.d中的*.conf定义
     ori_local_public_ip=
     nat_local_public_ip=
+    nat_local_public_ip_online_get= #默认留空，可以为yes,更自动找http://myip.ipip.net更新公网IP
     local_private_ip=
     spi_id=
     auth_sha256=
