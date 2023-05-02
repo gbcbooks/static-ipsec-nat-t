@@ -141,7 +141,7 @@ EOF
 update_nat_argument(){
     # 为空，在线获取，非空，不获取
     [ -z ${nat_local_public_ip_online_get} ] \
-    && nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}") \
+    && nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}")
     
     conntrack_result=$(ssh ${remote_ssh_user}@${remote_public_ip} -p ${remote_ssh_port} /bin/bash << EOF
     sudo /usr/sbin/conntrack -L -p udp | grep "src=${nat_local_public_ip}" | grep "dport=${remote_port}"
