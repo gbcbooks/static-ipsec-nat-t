@@ -140,6 +140,7 @@ EOF
 
 update_nat_argument(){
     # 为空，在线获取，非空，不获取
+    save_log "INFO" "updating nat_local_public_ip"
     [ -z ${nat_local_public_ip_online_get} ] \
     && nat_local_public_ip=$(curl -s http://myip.ipip.net | grep  -oE "([0-9]{1,3}\.){1,3}[0-9]{1,3}")
     
